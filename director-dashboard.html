@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Director Dashboard - Professor Visit Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0A66C2;
+            --primary-dark: #1C3FAA;
+            --accent: #00B074;
+            --accent-dark: #009460;
+            --dark: #1D2129;
+            --light: #F8F9FA;
+            --gray-50: #F8F9FA;
+            --gray-100: #E9ECEF;
+            --gray-200: #DEE2E6;
+            --gray-300: #CED4DA;
+            --gray-400: #ADB5BD;
+            --gray-500: #6C757D;
+            --gray-600: #495057;
+            --gray-700: #343A40;
+            --success: #28A745;
+            --warning: #FFC107;
+            --danger: #DC3545;
+            --border-radius: 8px;
+            --border-radius-lg: 12px;
+            --border-radius-xl: 16px;
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.12);
+            --transition: all 0.2s ease-in-out;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.5;
+        }
+
+        @font-face {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 400;
+            src: url(https://fonts.gstatic.com/s/inter/v12/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7W0Q5n-wU.woff2) format('woff2');
+        }
+
+        @font-face {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 500;
+            src: url(https://fonts.gstatic.com/s/inter/v12/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa0pL7W0Q5n-wU.woff2) format('woff2');
+        }
+
+        @font-face {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 600;
+            src: url(https://fonts.gstatic.com/s/inter/v12/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa2pL7W0Q5n-wU.woff2) format('woff2');
+        }
+
+        /* Desktop Layout */
+        .desktop-layout {
+            display: block;
+            min-height: 100vh;
+        }
+
+        .director-dashboard {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header */
+        .director-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+        }
+
+        .director-header-left {
+            flex: 1;
+        }
+
+        .director-header-right {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--gray-600);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+            gap: 0.5rem;
+        }
+
+        .btn-accent {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .btn-accent:hover {
+            background-color: var(--accent-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 176, 116, 0.2);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--gray-700);
+            border: 1px solid var(--gray-300);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--gray-50);
+            border-color: var(--gray-400);
+        }
+
+        /* Stats */
+        .director-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            padding: 1.5rem;
+            border: 1px solid var(--gray-100);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .stat-card:nth-child(1) .stat-icon {
+            background-color: rgba(0, 176, 116, 0.1);
+            color: var(--accent);
+        }
+
+        .stat-card:nth-child(2) .stat-icon {
+            background-color: rgba(255, 193, 7, 0.1);
+            color: var(--warning);
+        }
+
+        .stat-card:nth-child(3) .stat-icon {
+            background-color: rgba(10, 102, 194, 0.1);
+            color: var(--primary);
+        }
+
+        /* Reports Table */
+        .reports-table {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            border: 1px solid var(--gray-100);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .table-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .table-action {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .table-action:hover {
+            text-decoration: underline;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background-color: var(--gray-50);
+        }
+
+        th {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--gray-700);
+            border-bottom: 1px solid var(--gray-200);
+            font-size: 0.875rem;
+        }
+
+        td {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        tbody tr:hover {
+            background-color: var(--gray-50);
+        }
+
+        .professor-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .professor-name {
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .professor-university {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+        }
+
+        .date-info {
+            font-weight: 500;
+        }
+
+        .student-count {
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-approved {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: var(--success);
+        }
+
+        .status-draft {
+            background-color: rgba(255, 193, 7, 0.1);
+            color: var(--warning);
+        }
+
+        .action-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .action-link:hover {
+            text-decoration: underline;
+        }
+
+        .action-link.accent {
+            color: var(--accent);
+        }
+
+        /* Quick Navigation */
+        .quick-nav {
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+        }
+
+        .nav-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            display: block;
+            padding: 1rem;
+            background: white;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--border-radius);
+            text-align: center;
+            text-decoration: none;
+            color: var(--gray-700);
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-btn:hover {
+            border-color: var(--accent);
+            background-color: rgba(0, 176, 116, 0.05);
+            color: var(--accent);
+        }
+
+        /* Mobile Layout - Initially Hidden */
+        .mobile-layout {
+            display: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .director-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .desktop-layout {
+                display: none;
+            }
+            
+            .mobile-layout {
+                display: block;
+                min-height: 100vh;
+                padding-bottom: 5rem;
+            }
+            
+            /* Mobile Header */
+            .mobile-director-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1rem;
+                background: white;
+                border-bottom: 1px solid var(--gray-200);
+            }
+            
+            .mobile-director-info {
+                flex: 1;
+            }
+            
+            .mobile-director-title {
+                font-size: 1.25rem;
+                font-weight: 600;
+                margin-bottom: 0.25rem;
+            }
+            
+            .mobile-director-subtitle {
+                font-size: 0.875rem;
+                color: var(--gray-600);
+            }
+            
+            .mobile-director-avatar {
+                width: 40px;
+                height: 40px;
+                background-color: rgba(0, 176, 116, 0.1);
+                color: var(--accent);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 600;
+            }
+            
+            /* Mobile Content */
+            .mobile-director-content {
+                padding: 1rem;
+            }
+            
+            .last-login {
+                background-color: rgba(0, 176, 116, 0.1);
+                color: var(--accent);
+                padding: 0.75rem 1rem;
+                border-radius: var(--border-radius);
+                font-size: 0.875rem;
+                margin-bottom: 1.5rem;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            
+            .mobile-director-action {
+                background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+                color: white;
+                border-radius: var(--border-radius-xl);
+                padding: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .action-header {
+                margin-bottom: 1.5rem;
+            }
+            
+            .action-title {
+                font-size: 1.25rem;
+                font-weight: 600;
+                margin-bottom: 0.5rem;
+            }
+            
+            .action-description {
+                font-size: 0.875rem;
+                opacity: 0.9;
+            }
+            
+            .btn-large {
+                width: 100%;
+                padding: 1.25rem;
+                font-size: 1.125rem;
+                font-weight: 600;
+            }
+            
+            .mobile-director-stats {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .mobile-director-stat {
+                background: white;
+                border-radius: var(--border-radius-lg);
+                padding: 1.5rem;
+                text-align: center;
+                box-shadow: var(--shadow-sm);
+            }
+            
+            .stat-value {
+                font-size: 2rem;
+                font-weight: 700;
+                color: var(--accent);
+                margin-bottom: 0.5rem;
+            }
+            
+            .stat-label {
+                font-size: 0.875rem;
+                color: var(--gray-600);
+            }
+            
+            /* Mobile Reports */
+            .mobile-reports {
+                background: white;
+                border-radius: var(--border-radius-lg);
+                padding: 1.5rem;
+                margin-bottom: 2rem;
+            }
+            
+            .reports-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 1.5rem;
+            }
+            
+            .reports-title {
+                font-size: 1.125rem;
+                font-weight: 600;
+            }
+            
+            .reports-action {
+                color: var(--accent);
+                text-decoration: none;
+                font-weight: 500;
+                font-size: 0.875rem;
+            }
+            
+            .report-card {
+                background: white;
+                border: 1px solid var(--gray-200);
+                border-radius: var(--border-radius-lg);
+                padding: 1.5rem;
+                margin-bottom: 1rem;
+            }
+            
+            .report-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                margin-bottom: 1rem;
+            }
+            
+            .report-professor {
+                flex: 1;
+            }
+            
+            .professor-name {
+                font-weight: 600;
+                font-size: 1.125rem;
+                margin-bottom: 0.25rem;
+            }
+            
+            .professor-university {
+                font-size: 0.875rem;
+                color: var(--gray-600);
+            }
+            
+            .report-details {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+                margin-bottom: 1rem;
+            }
+            
+            .report-detail {
+                display: flex;
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+            
+            .detail-label {
+                font-size: 0.75rem;
+                color: var(--gray-500);
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+            
+            .detail-value {
+                font-weight: 500;
+            }
+            
+            .btn-full {
+                width: 100%;
+            }
+            
+            /* Mobile Navigation */
+            .mobile-quick-nav {
+                background: white;
+                border-radius: var(--border-radius-lg);
+                padding: 1.5rem;
+                margin-bottom: 2rem;
+            }
+            
+            .mobile-nav-buttons {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.75rem;
+            }
+            
+            .mobile-nav-btn {
+                display: block;
+                padding: 1rem;
+                background: white;
+                border: 1px solid var(--gray-300);
+                border-radius: var(--border-radius);
+                text-align: center;
+                text-decoration: none;
+                color: var(--gray-700);
+                font-weight: 500;
+                font-size: 0.875rem;
+            }
+            
+            .mobile-nav-btn:hover {
+                border-color: var(--accent);
+                color: var(--accent);
+            }
+            
+            /* Mobile Bottom Navigation */
+            .mobile-bottom-nav {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: white;
+                border-top: 1px solid var(--gray-200);
+                display: flex;
+                justify-content: space-around;
+                padding: 0.75rem 0;
+                z-index: 100;
+            }
+            
+            .mobile-bottom-link {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-decoration: none;
+                color: var(--gray-500);
+                padding: 0.5rem;
+                border-radius: var(--border-radius);
+                transition: var(--transition);
+                min-width: 60px;
+            }
+            
+            .mobile-bottom-link.active {
+                color: var(--accent);
+            }
+            
+            .mobile-bottom-link i {
+                font-size: 1.25rem;
+                margin-bottom: 0.25rem;
+            }
+            
+            .mobile-bottom-link span {
+                font-size: 0.75rem;
+                font-weight: 500;
+            }
+            
+            /* Adjust desktop quick nav for mobile */
+            .quick-nav {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+            
+            .nav-buttons {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Desktop Director Dashboard -->
+    <div class="desktop-layout">
+        <div class="director-dashboard">
+            <!-- Header -->
+            <div class="director-header">
+                <div class="director-header-left">
+                    <h1 class="page-title">Director Dashboard</h1>
+                    <p class="page-subtitle">School of Engineering • Dr. Alemayehu</p>
+                </div>
+                <div class="director-header-right">
+                    <a href="submit-form.html" class="btn btn-accent">
+                        <i class="fas fa-plus"></i> New Visit Report
+                    </a>
+                    <a href="index.html" class="btn btn-outline">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Stats -->
+            <div class="director-stats">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-info">
+                            <p class="stat-label">My Submitted Reports</p>
+                            <p class="stat-value">12</p>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-info">
+                            <p class="stat-label">Draft Reports</p>
+                            <p class="stat-value">3</p>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="fas fa-edit"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-info">
+                            <p class="stat-label">This Month</p>
+                            <p class="stat-value">2</p>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Reports -->
+            <div class="reports-table">
+                <div class="table-header">
+                    <div class="flex justify-between items-center">
+                        <h3 class="table-title">My Recent Visit Reports</h3>
+                        <a href="#" class="table-action">View All →</a>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Professor</th>
+                                <th>Date</th>
+                                <th>Students</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="professor-info">
+                                        <div class="professor-name">Prof. Michael Chen</div>
+                                        <div class="professor-university">Stanford University</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="date-info">Nov 15, 2024</div>
+                                </td>
+                                <td class="student-count">45</td>
+                                <td>
+                                    <span class="status-badge status-approved">Approved</span>
+                                </td>
+                                <td>
+                                    <a href="#" class="action-link">View</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="professor-info">
+                                        <div class="professor-name">Dr. Sarah Johnson</div>
+                                        <div class="professor-university">Cambridge University</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="date-info">Nov 12, 2024</div>
+                                </td>
+                                <td class="student-count">32</td>
+                                <td>
+                                    <span class="status-badge status-draft">Draft</span>
+                                </td>
+                                <td>
+                                    <a href="submit-form.html" class="action-link accent">Continue</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="quick-nav">
+                <h3 class="section-title">System Navigation</h3>
+                <div class="nav-buttons">
+                    <a href="index.html" class="nav-btn">Home</a>
+                    <a href="admin-dashboard.html" class="nav-btn">Admin View</a>
+                    <a href="submit-form.html" class="nav-btn">Submit Form</a>
+                    <a href="director-login.html" class="nav-btn">Director Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Director Dashboard -->
+    <div class="mobile-layout">
+        <div class="mobile-director-header">
+            <div class="mobile-director-info">
+                <h1 class="mobile-director-title">Welcome, Dr. Alemayehu</h1>
+                <p class="mobile-director-subtitle">School of Engineering</p>
+            </div>
+            <div class="mobile-director-avatar">DA</div>
+        </div>
+
+        <div class="mobile-director-content">
+            <!-- Last Login -->
+            <div class="last-login">
+                <i class="fas fa-clock"></i> Last login: Today, 09:42 AM
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="mobile-director-action">
+                <div class="action-header">
+                    <h3 class="action-title">Submit Professor Visit Report</h3>
+                    <p class="action-description">Document and submit details of professor visits to your school</p>
+                </div>
+                <a href="submit-form.html" class="btn btn-accent btn-large">
+                    + New Visit Report
+                </a>
+            </div>
+
+            <!-- Stats Overview -->
+            <div class="mobile-director-stats">
+                <div class="mobile-director-stat">
+                    <div class="stat-value">12</div>
+                    <div class="stat-label">Total Visits</div>
+                </div>
+                <div class="mobile-director-stat">
+                    <div class="stat-value">3</div>
+                    <div class="stat-label">This Month</div>
+                </div>
+            </div>
+
+            <!-- Recent Visits -->
+            <div class="mobile-reports">
+                <div class="reports-header">
+                    <h3 class="reports-title">Recent Visit Reports</h3>
+                    <a href="#" class="reports-action">View All →</a>
+                </div>
+
+                <div class="report-card">
+                    <div class="report-header">
+                        <div class="report-professor">
+                            <h4 class="professor-name">Prof. Michael Chen</h4>
+                            <p class="professor-university">Stanford University</p>
+                        </div>
+                        <span class="status-badge status-approved">Submitted</span>
+                    </div>
+                    <div class="report-details">
+                        <div class="report-detail">
+                            <div class="detail-label">Date</div>
+                            <div class="detail-value">Nov 15, 2024</div>
+                        </div>
+                        <div class="report-detail">
+                            <div class="detail-label">Students</div>
+                            <div class="detail-value">45</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline btn-full">View Details</button>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="mobile-quick-nav">
+                <h3 class="section-title">Navigate to Screens</h3>
+                <div class="mobile-nav-buttons">
+                    <a href="index.html" class="mobile-nav-btn">Home</a>
+                    <a href="admin-dashboard.html" class="mobile-nav-btn">Admin View</a>
+                    <a href="submit-form.html" class="mobile-nav-btn">Submit Form</a>
+                    <a href="director-login.html" class="mobile-nav-btn">Director Login</a>
+                </div>
+            </div>
+            
+            <!-- Desktop Quick Nav for Mobile -->
+            <div class="quick-nav">
+                <h3 class="section-title">All Screens</h3>
+                <div class="nav-buttons">
+                    <a href="index.html" class="nav-btn">Home</a>
+                    <a href="admin-login.html" class="nav-btn">Admin Login</a>
+                    <a href="director-login.html" class="nav-btn">Director Login</a>
+                    <a href="admin-dashboard.html" class="nav-btn">Admin Dashboard</a>
+                    <a href="submit-form.html" class="nav-btn">Submit Form</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Bottom Navigation -->
+        <div class="mobile-bottom-nav">
+            <a href="index.html" class="mobile-bottom-link active">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="submit-form.html" class="mobile-bottom-link">
+                <i class="fas fa-plus-circle"></i>
+                <span>New Report</span>
+            </a>
+            <a href="admin-dashboard.html" class="mobile-bottom-link">
+                <i class="fas fa-user-shield"></i>
+                <span>Admin View</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Set current year
+        document.addEventListener('DOMContentLoaded', function() {
+            const yearElements = document.querySelectorAll('.current-year');
+            const currentYear = new Date().getFullYear();
+            
+            yearElements.forEach(el => {
+                el.textContent = currentYear;
+            });
+            
+            // Mobile navigation active state
+            const currentPage = window.location.pathname.split('/').pop();
+            const mobileLinks = document.querySelectorAll('.mobile-bottom-link');
+            
+            mobileLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href === currentPage) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+            
+            // Table row click handlers
+            const tableRows = document.querySelectorAll('tbody tr');
+            tableRows.forEach(row => {
+                row.addEventListener('click', function(e) {
+                    if (!e.target.closest('a')) {
+                        alert('Viewing report details...');
+                    }
+                });
+            });
+            
+            // View All button handler
+            const viewAllBtn = document.querySelector('.table-action');
+            if (viewAllBtn) {
+                viewAllBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    alert('Loading all reports...');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Director Login - Professor Visit Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0A66C2;
+            --primary-dark: #1C3FAA;
+            --accent: #00B074;
+            --accent-dark: #009460;
+            --dark: #1D2129;
+            --light: #F8F9FA;
+            --gray-50: #F8F9FA;
+            --gray-100: #E9ECEF;
+            --gray-200: #DEE2E6;
+            --gray-300: #CED4DA;
+            --gray-400: #ADB5BD;
+            --gray-500: #6C757D;
+            --gray-600: #495057;
+            --gray-700: #343A40;
+            --success: #28A745;
+            --warning: #FFC107;
+            --danger: #DC3545;
+            --border-radius: 8px;
+            --border-radius-lg: 12px;
+            --border-radius-xl: 16px;
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.12);
+            --transition: all 0.2s ease-in-out;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @font-face {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 400;
+            src: url(https://fonts.gstatic.com/s/inter/v12/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7W0Q5n-wU.woff2) format('woff2');
+        }
+
+        @font-face {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 500;
+            src: url(https://fonts.gstatic.com/s/inter/v12/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa0pL7W0Q5n-wU.woff2) format('woff2');
+        }
+
+        @font-face {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: 600;
+            src: url(https://fonts.gstatic.com/s/inter/v12/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa2pL7W0Q5n-wU.woff2) format('woff2');
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: white;
+            box-shadow: var(--shadow-sm);
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .nav-left, .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.25rem;
+        }
+
+        .logo-text h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .logo-text p {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            margin: 0;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--gray-700);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover {
+            background-color: var(--gray-100);
+            color: var(--primary);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background-color: var(--gray-200);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        /* Main Content */
+        .container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .back-link {
+            position: absolute;
+            top: 6rem;
+            left: 2rem;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--gray-600);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .back-btn:hover {
+            background-color: var(--gray-100);
+            color: var(--accent);
+        }
+
+        /* Login Card */
+        .login-card {
+            width: 100%;
+            max-width: 500px;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 3rem;
+            box-shadow: var(--shadow);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .login-icon {
+            width: 48px;
+            height: 48px;
+            background-color: var(--accent);
+            color: white;
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .login-title h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .login-title p {
+            color: var(--gray-600);
+            margin: 0;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Form Styles */
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: var(--gray-700);
+        }
+
+        .form-input {
+            padding: 1rem;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(0, 176, 116, 0.1);
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checkbox-label {
+            color: var(--gray-700);
+        }
+
+        .forgot-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+            gap: 0.5rem;
+        }
+
+        .btn-accent {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .btn-accent:hover {
+            background-color: var(--accent-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 176, 116, 0.2);
+        }
+
+        .btn-login {
+            margin-top: 1rem;
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .demo-link {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .demo-btn {
+            color: var(--gray-600);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .demo-btn:hover {
+            color: var(--accent);
+            text-decoration: underline;
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--gray-200);
+            color: var(--gray-600);
+            font-size: 0.875rem;
+        }
+
+        /* Quick Navigation */
+        .quick-nav {
+            max-width: 800px;
+            margin: 3rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+        }
+
+        .nav-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            display: block;
+            padding: 1rem;
+            background: white;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--border-radius);
+            text-align: center;
+            text-decoration: none;
+            color: var(--gray-700);
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-btn:hover {
+            border-color: var(--accent);
+            background-color: rgba(0, 176, 116, 0.05);
+            color: var(--accent);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--gray-600);
+            font-size: 0.875rem;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .back-link {
+                position: static;
+                margin-bottom: 1rem;
+            }
+            
+            .login-card {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+            
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .quick-nav {
+                margin: 2rem 1rem;
+                padding: 1.5rem;
+            }
+            
+            .nav-buttons {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <div class="logo">
+                <div class="logo-icon">KU</div>
+                <div class="logo-text">
+                    <h3>Kotebe University</h3>
+                    <p>VP Office of Research & Community Engagement</p>
+                </div>
+            </div>
+        </div>
+        <div class="nav-right">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="admin-login.html" class="nav-link">Admin</a>
+            <div class="user-avatar">KU</div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container">
+        <div class="back-link">
+            <a href="index.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+        </div>
+
+        <div class="login-card">
+            <div class="login-header">
+                <div class="login-logo">
+                    <div class="login-icon">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <div class="login-title">
+                        <h2>Director Portal</h2>
+                        <p>School Access</p>
+                    </div>
+                </div>
+                <h1 class="page-title">Director Login</h1>
+            </div>
+
+            <form class="login-form">
+                <div class="form-group">
+                    <label class="form-label">University Email</label>
+                    <input type="email" class="form-input" placeholder="director.school@kotebe.edu.et" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-input" placeholder="••••••••" required>
+                </div>
+
+                <div class="form-options">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="rememberDirector">
+                        <label for="rememberDirector" class="checkbox-label">Remember me</label>
+                    </div>
+                    <a href="#" class="forgot-link">Forgot password?</a>
+                </div>
+
+                <button type="button" class="btn btn-accent btn-login" onclick="window.location.href='director-dashboard.html'">
+                    Sign In as Director
+                </button>
+
+                <div class="demo-link">
+                    <a href="director-dashboard.html" class="demo-btn">
+                        Or continue to director dashboard demo →
+                    </a>
+                </div>
+
+                <div class="login-footer">
+                    <p>For school directors and deans only.</p>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Quick Navigation -->
+    <div class="quick-nav">
+        <h3 class="section-title">Navigate to Other Screens</h3>
+        <div class="nav-buttons">
+            <a href="index.html" class="nav-btn">Home</a>
+            <a href="admin-login.html" class="nav-btn">Admin Login</a>
+            <a href="admin-dashboard.html" class="nav-btn">Admin Dashboard</a>
+            <a href="director-dashboard.html" class="nav-btn">Director Dashboard</a>
+            <a href="submit-form.html" class="nav-btn">Submit Form</a>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>© <span class="current-year">2024</span> Kotebe University. Professor Visit Management System</p>
+    </footer>
+
+    <script>
+        // Set current year
+        document.querySelector('.current-year').textContent = new Date().getFullYear();
+        
+        // Form validation
+        document.querySelector('.btn-login').addEventListener('click', function(e) {
+            const form = document.querySelector('.login-form');
+            const email = form.querySelector('input[type="email"]');
+            const password = form.querySelector('input[type="password"]');
+            
+            if (!email.value || !password.value) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            // Simulate login process
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing In...';
+            this.disabled = true;
+            
+            setTimeout(() => {
+                window.location.href = 'director-dashboard.html';
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
