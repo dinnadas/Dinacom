@@ -3,985 +3,662 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Submit Visit Form - Professor Visit Management System</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Submit Professor Visit Report</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
-        /* Reset and Base Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        * { margin:0; padding:0; box-sizing:border-box; }
+        
+        :root {
+            --primary: #0a66c2;
+            --primary-dark: #084ca3;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --dark: #1d2129;
+            --light: #f8f9fa;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --radius: 8px;
+            --radius-lg: 12px;
+            --shadow: 0 4px 12px rgba(0,0,0,0.08);
+            --transition: 0.18s ease;
         }
 
-        :root {
-            --primary: #0A66C2;
-            --primary-dark: #1C3FAA;
-            --accent: #00B074;
-            --accent-dark: #009460;
-            --dark: #1D2129;
-            --light: #F8F9FA;
-            --gray-50: #F8F9FA;
-            --gray-100: #E9ECEF;
-            --gray-200: #DEE2E6;
-            --gray-300: #CED4DA;
-            --gray-400: #ADB5BD;
-            --gray-500: #6C757D;
-            --gray-600: #495057;
-            --gray-700: #343A40;
-            --success: #28A745;
-            --warning: #FFC107;
-            --danger: #DC3545;
-            --border-radius: 8px;
-            --border-radius-lg: 12px;
-            --border-radius-xl: 16px;
-            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            --shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.12);
-            --transition: all 0.2s ease-in-out;
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --light: #111827;
+                --dark: #f3f4f6;
+                --gray-50: #1f2937;
+                --gray-100: #374151;
+                --gray-200: #4b5563;
+                --gray-300: #6b7280;
+                --gray-500: #9ca3af;
+                --gray-600: #d1d5db;
+                --gray-700: #e5e7eb;
+            }
+            body { background: var(--light); color: var(--dark); }
+            .form-card, .quick-nav, .mobile-form-actions, .attachment-area {
+                background: #1f2937; border-color: #374151;
+            }
+            .form-input, .mobile-form-input, textarea {
+                background: #374151; color: #f3f4f6; border-color: #4b5563;
+            }
+            .form-input:focus, .mobile-form-input:focus {
+                border-color: var(--primary); box-shadow: 0 0 0 3px rgba(10,102,194,0.3);
+            }
         }
 
         body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background-color: var(--light);
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--light);
             color: var(--dark);
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
-        @font-face {
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 400;
-            src: url(https://fonts.gstatic.com/s/inter/v12/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7W0Q5n-wU.woff2) format('woff2');
-        }
+        .form-container { max-width: 1180px; margin: 0 auto; padding: 1.5rem; }
 
-        @font-face {
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 500;
-            src: url(https://fonts.gstatic.com/s/inter/v12/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa0pL7W0Q5n-wU.woff2) format('woff2');
-        }
-
-        @font-face {
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 600;
-            src: url(https://fonts.gstatic.com/s/inter/v12/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa2pL7W0Q5n-wU.woff2) format('woff2');
-        }
-
-        /* Desktop Layout */
-        .desktop-layout {
-            display: block;
-            min-height: 100vh;
-        }
-
-        .form-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        /* Header */
         .form-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             margin-bottom: 2rem;
-        }
-
-        .form-header-left {
-            flex: 1;
-        }
-
-        .form-header-right {
-            display: flex;
+            flex-wrap: wrap;
             gap: 1rem;
         }
 
-        .page-title {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
+        .page-title { font-size: clamp(1.8rem, 5vw, 2.4rem); }
 
-        .page-subtitle {
-            color: var(--gray-600);
-        }
-
-        /* Buttons */
         .btn {
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-            padding: 0.75rem 1.5rem;
-            border-radius: var(--border-radius);
-            font-weight: 600;
-            text-decoration: none;
-            cursor: pointer;
-            border: none;
-            transition: var(--transition);
             gap: 0.5rem;
+            padding: 0.7rem 1.4rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            border: 1px solid transparent;
         }
 
-        .btn-primary {
-            background-color: var(--primary);
-            color: white;
-        }
+        .btn-primary   { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-outline   { border-color: var(--gray-300); color: var(--gray-700); background: transparent; }
+        .btn-outline:hover { background: var(--gray-100); }
 
-        .btn-primary:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(10, 102, 194, 0.2);
-        }
-
-        .btn-outline {
-            background-color: transparent;
-            color: var(--gray-700);
-            border: 1px solid var(--gray-300);
-        }
-
-        .btn-outline:hover {
-            background-color: var(--gray-50);
-            border-color: var(--gray-400);
-        }
-
-        /* Form Card */
         .form-card {
             background: white;
-            border-radius: var(--border-radius-xl);
-            padding: 2.5rem;
+            border-radius: var(--radius-lg);
+            padding: 2rem;
             box-shadow: var(--shadow);
-            border: 1px solid var(--gray-100);
-            margin-bottom: 2rem;
-        }
-
-        /* Progress Bar */
-        .progress-bar {
-            margin-bottom: 2.5rem;
-        }
-
-        .progress-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.75rem;
-        }
-
-        .progress-label {
-            font-weight: 500;
-            color: var(--primary);
-        }
-
-        .progress-percentage {
-            color: var(--gray-600);
-            font-size: 0.875rem;
-        }
-
-        .progress-track {
-            height: 8px;
-            background-color: var(--gray-200);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background-color: var(--primary);
-            border-radius: 4px;
-            transition: width 0.3s ease;
-        }
-
-        /* Form Section */
-        .form-section {
-            margin-bottom: 2.5rem;
-        }
-
-        .form-section:last-child {
-            margin-bottom: 0;
+            border: 1px solid var(--gray-200);
         }
 
         .section-title {
-            font-size: 1.25rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
+            font-size: 1.35rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
             border-bottom: 1px solid var(--gray-200);
         }
 
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem 2rem;
         }
 
-        .form-content {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        /* Form Elements */
         .form-group {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 0.45rem;
         }
 
         .form-label {
-            font-weight: 500;
+            font-weight: 600;
             color: var(--gray-700);
         }
 
-        .form-input {
-            padding: 1rem;
+        .required { color: var(--danger); }
+
+        .form-input, .mobile-form-input {
+            padding: 0.9rem 1rem;
             border: 1px solid var(--gray-300);
-            border-radius: var(--border-radius);
+            border-radius: var(--radius);
             font-size: 1rem;
             transition: var(--transition);
-            width: 100%;
         }
 
-        .form-input:focus {
+        .form-input:focus, .mobile-form-input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(10, 102, 194, 0.1);
+            box-shadow: 0 0 0 3px rgba(10,102,194,0.12);
         }
 
         select.form-input {
             appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236C757D' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 1rem center;
-            background-size: 16px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236b7280' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E") no-repeat right 1rem center/16px;
             padding-right: 2.5rem;
         }
 
-        .textarea {
-            min-height: 120px;
-            resize: vertical;
-            font-family: inherit;
+        textarea { min-height: 110px; resize: vertical; }
+
+        .form-hint { font-size: 0.82rem; color: var(--gray-500); margin-top: 0.35rem; }
+
+        .error-message {
+            color: var(--danger);
+            font-size: 0.84rem;
+            min-height: 1.3em;
         }
 
-        .form-hint {
-            font-size: 0.875rem;
-            color: var(--gray-500);
-            margin-top: 0.5rem;
-        }
-
-        /* Form Actions */
         .form-actions {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-top: 2rem;
+            margin-top: 2.5rem;
+            padding-top: 1.5rem;
             border-top: 1px solid var(--gray-200);
-            margin-top: 2rem;
         }
 
-        .action-buttons {
-            display: flex;
-            gap: 1rem;
-        }
-
-        /* Quick Navigation */
-        .quick-nav {
-            background: white;
-            border-radius: var(--border-radius-xl);
-            padding: 2rem;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .nav-buttons {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1rem;
-        }
-
-        .nav-btn {
-            display: block;
-            padding: 1rem;
-            background: white;
-            border: 1px solid var(--gray-300);
-            border-radius: var(--border-radius);
-            text-align: center;
-            text-decoration: none;
-            color: var(--gray-700);
-            font-weight: 500;
-            transition: var(--transition);
-        }
-
-        .nav-btn:hover {
-            border-color: var(--primary);
-            background-color: rgba(10, 102, 194, 0.05);
-            color: var(--primary);
-        }
-
-        /* Mobile Layout - Initially Hidden */
-        .mobile-layout {
-            display: none;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 1024px) {
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .nav-buttons {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
+        /* Mobile specific */
         @media (max-width: 768px) {
-            .desktop-layout {
-                display: none;
-            }
-            
-            .mobile-layout {
-                display: block;
-                min-height: 100vh;
-                padding-bottom: 5rem;
-            }
-            
-            /* Mobile Header */
-            .mobile-form-container {
-                padding-bottom: 5rem;
-            }
-            
+            .desktop-layout { display: none; }
+            .mobile-layout { display: block; }
+
             .mobile-form-header {
-                display: flex;
-                align-items: center;
-                padding: 1rem;
-                background: white;
-                border-bottom: 1px solid var(--gray-200);
                 position: sticky;
                 top: 0;
+                background: var(--light);
+                border-bottom: 1px solid var(--gray-200);
+                padding: 1rem;
                 z-index: 10;
             }
-            
-            .back-btn {
-                color: var(--gray-600);
-                text-decoration: none;
-                padding: 0.5rem;
-                margin-right: 1rem;
-                border-radius: var(--border-radius);
-                transition: var(--transition);
-                font-size: 1.25rem;
-            }
-            
-            .back-btn:hover {
-                background-color: var(--gray-100);
-            }
-            
-            .mobile-form-title {
-                font-size: 1.25rem;
-                font-weight: 600;
-                flex: 1;
-            }
-            
-            /* Progress Steps */
-            .progress-steps {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 1rem;
-                background: white;
-                border-bottom: 1px solid var(--gray-200);
-            }
-            
-            .progress-step {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 0.5rem;
-                flex: 1;
-            }
-            
-            .progress-step.active .step-number {
-                background-color: var(--primary);
-                color: white;
-            }
-            
-            .progress-step.active .step-label {
-                color: var(--primary);
-                font-weight: 500;
-            }
-            
-            .step-number {
-                width: 32px;
-                height: 32px;
-                border-radius: 50%;
-                background-color: var(--gray-200);
-                color: var(--gray-600);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-weight: 600;
-                font-size: 0.875rem;
-            }
-            
-            .step-label {
-                font-size: 0.75rem;
-                color: var(--gray-500);
-            }
-            
-            /* Mobile Form */
-            .mobile-form {
-                padding: 1rem;
-            }
-            
-            .mobile-form-section {
-                margin-bottom: 2rem;
-            }
-            
-            .mobile-section-title {
-                font-size: 1.125rem;
-                font-weight: 600;
-                margin-bottom: 1rem;
-                color: var(--dark);
-            }
-            
-            .mobile-form-group {
-                margin-bottom: 1rem;
-            }
-            
-            .mobile-form-label {
-                display: block;
-                font-weight: 500;
-                color: var(--gray-700);
-                margin-bottom: 0.5rem;
-                font-size: 0.875rem;
-            }
-            
-            .mobile-form-input {
-                width: 100%;
-                padding: 1rem;
-                border: 1px solid var(--gray-300);
-                border-radius: var(--border-radius-lg);
-                font-size: 1rem;
-                transition: var(--transition);
-            }
-            
-            .mobile-form-input:focus {
-                outline: none;
-                border-color: var(--primary);
-            }
-            
-            .mobile-form-row {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1rem;
-            }
-            
+
+            .mobile-form { padding: 1rem; }
+
+            .mobile-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
             .level-buttons {
                 display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 0.5rem;
+                grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+                gap: 0.6rem;
             }
-            
-            .level-btn {
-                padding: 1rem;
-                background: white;
-                border: 1px solid var(--gray-300);
-                border-radius: var(--border-radius-lg);
-                text-align: center;
-                font-size: 0.875rem;
-                cursor: pointer;
-                transition: var(--transition);
-                border: none;
-            }
-            
-            .level-btn:hover {
+
+            .level-btn.active {
+                background: rgba(10,102,194,0.1);
                 border-color: var(--primary);
-                background-color: rgba(10, 102, 194, 0.05);
-            }
-            
-            .attachment-area {
-                border: 2px dashed var(--gray-300);
-                border-radius: var(--border-radius-lg);
-                padding: 2rem;
-                text-align: center;
-            }
-            
-            .attachment-icon {
-                width: 48px;
-                height: 48px;
-                background-color: rgba(10, 102, 194, 0.1);
                 color: var(--primary);
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                margin: 0 auto 1rem;
-                font-size: 1.25rem;
             }
-            
-            .attachment-text {
-                color: var(--gray-600);
-                margin-bottom: 0.5rem;
-            }
-            
-            .attachment-note {
-                font-size: 0.875rem;
-                color: var(--gray-500);
-            }
-            
+
             .mobile-form-actions {
                 position: fixed;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                background: white;
+                bottom: 0; left: 0; right: 0;
+                background: var(--light);
                 border-top: 1px solid var(--gray-200);
                 padding: 1rem;
                 display: flex;
-                gap: 1rem;
+                gap: 0.8rem;
                 z-index: 100;
             }
-            
-            .btn-mobile {
-                flex: 1;
-                padding: 1rem;
-                font-size: 1rem;
-            }
-            
-            /* Adjust desktop quick nav for mobile */
-            .quick-nav {
-                padding: 1.5rem;
-                margin: 1rem;
-            }
+
+            .btn-mobile { flex: 1; padding: 1rem; font-size: 1rem; }
         }
+
+        /* File upload area */
+        .file-area {
+            border: 2px dashed var(--gray-300);
+            border-radius: var(--radius-lg);
+            padding: 2.2rem 1.5rem;
+            text-align: center;
+            transition: border-color 0.2s;
+            cursor: pointer;
+        }
+
+        .file-area:hover, .file-area:focus-within {
+            border-color: var(--primary);
+            background: rgba(10,102,194,0.03);
+        }
+
+        .file-preview { margin-top: 1rem; font-size: 0.9rem; color: var(--gray-600); }
     </style>
 </head>
 <body>
-    <!-- Desktop Form -->
-    <div class="desktop-layout">
-        <div class="form-container">
-            <!-- Header -->
-            <div class="form-header">
-                <div class="form-header-left">
-                    <h1 class="page-title">Submit Professor Visit Report</h1>
-                    <p class="page-subtitle">Complete and submit details of the professor visit</p>
-                </div>
-                <div class="form-header-right">
-                    <a href="director-dashboard.html" class="btn btn-outline">
-                        <i class="fas fa-arrow-left"></i> Back to Dashboard
-                    </a>
-                    <a href="index.html" class="btn btn-outline">
-                        <i class="fas fa-home"></i> Home
-                    </a>
-                </div>
+
+<!-- ──────────────────────────────────────────────── -->
+<!--                  DESKTOP LAYOUT                  -->
+<!-- ──────────────────────────────────────────────── -->
+
+<div class="desktop-layout">
+    <div class="form-container">
+        <div class="form-header">
+            <div>
+                <h1 class="page-title">Professor Visit Report</h1>
+                <p style="color:var(--gray-600)">Record details of the academic visit</p>
             </div>
-            
-            <!-- Form -->
-            <div class="form-card">
-                <form id="visitForm">
-                    <!-- Progress Bar -->
-                    <div class="progress-bar">
-                        <div class="progress-header">
-                            <div class="progress-label">Step 1 of 3: Basic Information</div>
-                            <div class="progress-percentage">60% Complete</div>
+            <div style="display:flex; gap:1rem;">
+                <a href="director-dashboard.html" class="btn btn-outline"><i class="fa-solid fa-arrow-left"></i> Dashboard</a>
+                <a href="index.html" class="btn btn-outline"><i class="fa-solid fa-house"></i> Home</a>
+            </div>
+        </div>
+
+        <div class="form-card">
+            <form id="visitForm" novalidate>
+                <!-- Progress -->
+                <div class="progress-bar" style="margin-bottom:2rem;">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:0.6rem; font-weight:500; color:var(--primary);">
+                        <span>Step <span id="stepNum">1</span> of 3</span>
+                        <span id="stepPercent">35%</span>
+                    </div>
+                    <div style="height:10px; background:var(--gray-200); border-radius:5px; overflow:hidden;">
+                        <div id="progressFill" style="height:100%; background:var(--primary); width:35%; transition:width 0.4s;"></div>
+                    </div>
+                </div>
+
+                <!-- Step 1 -->
+                <section class="form-section" id="step1">
+                    <h2 class="section-title">Professor & Visit Basics</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="profName"><span class="required">*</span> Professor Name</label>
+                            <input type="text" id="profName" name="prof_name" class="form-input" required autocomplete="name">
+                            <div class="error-message"></div>
                         </div>
-                        <div class="progress-track">
-                            <div class="progress-fill" style="width: 60%"></div>
+                        <div class="form-group">
+                            <label for="institution"><span class="required">*</span> Institution / University</label>
+                            <input type="text" id="institution" name="institution" class="form-input" required autocomplete="organization">
+                            <div class="error-message"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="visitDate"><span class="required">*</span> Date of Visit</label>
+                            <input type="date" id="visitDate" name="visit_date" class="form-input" required>
+                            <div class="error-message"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="visitPurpose"><span class="required">*</span> Purpose of Visit</label>
+                            <select id="visitPurpose" name="purpose" class="form-input" required>
+                                <option value="">— Select —</option>
+                                <option value="research">Research Collaboration</option>
+                                <option value="curriculum">Curriculum / Syllabus Discussion</option>
+                                <option value="lecture">Guest Lecture</option>
+                                <option value="workshop">Workshop / Seminar</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <div class="error-message"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="startTime"><span class="required">*</span> Start Time</label>
+                            <input type="time" id="startTime" name="start_time" class="form-input" required>
+                            <div class="error-message"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="endTime"><span class="required">*</span> End Time</label>
+                            <input type="time" id="endTime" name="end_time" class="form-input" required>
+                            <div class="error-message"></div>
                         </div>
                     </div>
-                    
-                    <!-- Professor Information -->
-                    <section class="form-section">
-                        <h2 class="section-title">Professor Information</h2>
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label for="professorName" class="form-label">Full Name *</label>
-                                <input type="text" id="professorName" class="form-input" placeholder="Enter professor's full name" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="institution" class="form-label">University/Institution *</label>
-                                <input type="text" id="institution" class="form-input" placeholder="Enter institution name" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="visitDate" class="form-label">Visit Date *</label>
-                                <input type="date" id="visitDate" class="form-input" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="visitPurpose" class="form-label">Visit Purpose *</label>
-                                <select id="visitPurpose" class="form-input" required>
-                                    <option value="">Select purpose</option>
-                                    <option value="research">Research Collaboration</option>
-                                    <option value="curriculum">Curriculum Development</option>
-                                    <option value="lecture">Guest Lecture</option>
-                                    <option value="workshop">Workshop/Seminar</option>
-                                    <option value="other">Other</option>
-                                </select>
-                            </div>
+                </section>
+
+                <!-- Step 2 -->
+                <section class="form-section" id="step2" style="display:none;">
+                    <h2 class="section-title">Meeting & Academic Impact</h2>
+                    <div class="form-group">
+                        <label for="participants"><span class="required">*</span> Participants (university side)</label>
+                        <textarea id="participants" name="participants" class="form-input" rows="3" required placeholder="e.g. Dr. Smith, Prof. Jones, Ms. Patel"></textarea>
+                        <div class="error-message"></div>
+                        <p class="form-hint">Separate names with commas</p>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="subject"><span class="required">*</span> Main Topic / Subject</label>
+                            <select id="subject" name="subject" class="form-input" required>
+                                <option value="">— Select —</option>
+                                <option value="research">Research Collaboration</option>
+                                <option value="curriculum">Curriculum Development</option>
+                                <option value="faculty">Faculty Exchange / Development</option>
+                                <option value="student">Student Mobility / Programs</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <div class="error-message"></div>
                         </div>
-                    </section>
-                    
-                    <!-- Meeting Details -->
-                    <section class="form-section">
-                        <h2 class="section-title">Meeting Details</h2>
-                        <div class="form-content">
-                            <div class="form-group">
-                                <label for="participants" class="form-label">Meeting Participants *</label>
-                                <textarea id="participants" class="form-input textarea" placeholder="List all university staff the professor met with" required></textarea>
-                                <p class="form-hint">Separate names with commas</p>
-                            </div>
-                            
-                            <div class="form-grid">
-                                <div class="form-group">
-                                    <label for="subject" class="form-label">Subject Discussed *</label>
-                                    <select id="subject" class="form-input" required>
-                                        <option value="">Select subject</option>
-                                        <option value="research">Research Collaboration</option>
-                                        <option value="curriculum">Curriculum Development</option>
-                                        <option value="faculty">Faculty Exchange</option>
-                                        <option value="student">Student Programs</option>
-                                        <option value="other">Other</option>
-                                    </select>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="studentCount" class="form-label">Number of Students *</label>
-                                    <input type="number" id="studentCount" class="form-input" placeholder="0" min="0" required>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="teachingLevel" class="form-label">Teaching Level *</label>
-                                    <select id="teachingLevel" class="form-input" required>
-                                        <option value="">Select level</option>
-                                        <option value="undergrad">Undergraduate</option>
-                                        <option value="graduate">Graduate</option>
-                                        <option value="phd">PhD</option>
-                                        <option value="mixed">Mixed Levels</option>
-                                    </select>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="duration" class="form-label">Duration (hours) *</label>
-                                    <input type="number" id="duration" class="form-input" placeholder="2.5" min="0.5" step="0.5" required>
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="notes" class="form-label">Additional Notes</label>
-                                <textarea id="notes" class="form-input textarea" placeholder="Any additional observations, outcomes, or follow-up actions"></textarea>
-                            </div>
+                        <div class="form-group">
+                            <label for="studentCount"><span class="required">*</span> Students Reached</label>
+                            <input type="number" id="studentCount" name="student_count" class="form-input" min="0" required>
+                            <div class="error-message"></div>
                         </div>
-                    </section>
-                    
-                    <!-- Form Actions -->
-                    <div class="form-actions">
-                        <button type="button" class="btn btn-outline" onclick="window.location.href='director-dashboard.html'">
-                            Cancel
+                        <div class="form-group">
+                            <label><span class="required">*</span> Level</label>
+                            <div style="display:flex; flex-wrap:wrap; gap:0.8rem; margin-top:0.4rem;">
+                                <label><input type="radio" name="level" value="undergrad" required> Undergraduate</label>
+                                <label><input type="radio" name="level" value="graduate"> Graduate</label>
+                                <label><input type="radio" name="level" value="phd"> PhD</label>
+                                <label><input type="radio" name="level" value="mixed"> Mixed</label>
+                            </div>
+                            <div class="error-message"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Step 3 -->
+                <section class="form-section" id="step3" style="display:none;">
+                    <h2 class="section-title">Additional Information & Files</h2>
+                    <div class="form-group">
+                        <label for="notes">Observations / Outcomes / Follow-up</label>
+                        <textarea id="notes" name="notes" class="form-input" rows="5" placeholder="Key results, agreements, next steps..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Supporting Files (photos, slides, attendance sheet...)</label>
+                        <div class="file-area" tabindex="0" role="button">
+                            <input type="file" id="files" name="files" multiple accept="image/*,.pdf,.doc,.docx,.ppt,.pptx" style="display:none;">
+                            <p><strong>Click or drag files here</strong></p>
+                            <p class="form-hint">Max 12 MB per file • Multiple files allowed</p>
+                            <div id="fileList" class="file-preview"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" id="cancelBtn">Cancel</button>
+                    <div style="display:flex; gap:1rem;">
+                        <button type="button" class="btn btn-outline" id="prevBtn" style="display:none;">← Previous</button>
+                        <button type="button" class="btn btn-primary" id="nextBtn">Next →</button>
+                        <button type="submit" class="btn btn-primary" id="submitBtn" style="display:none;">
+                            <i class="fa-solid fa-check"></i> Submit Report
                         </button>
-                        <div class="action-buttons">
-                            <button type="button" class="btn btn-outline" id="saveDraftBtn">
-                                Save as Draft
-                            </button>
-                            <button type="button" class="btn btn-primary" id="submitReportBtn">
-                                Submit Report
-                            </button>
-                        </div>
                     </div>
-                </form>
-            </div>
-            
-            <!-- Navigation -->
-            <div class="quick-nav">
-                <h3 class="section-title">Quick Navigation</h3>
-                <div class="nav-buttons">
-                    <a href="index.html" class="nav-btn">Home</a>
-                    <a href="admin-dashboard.html" class="nav-btn">Admin View</a>
-                    <a href="director-dashboard.html" class="nav-btn">Director Dashboard</a>
-                    <a href="admin-login.html" class="nav-btn">Admin Login</a>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Mobile Form -->
-    <div class="mobile-layout">
-        <div class="mobile-form-container">
-            <!-- Header -->
-            <div class="mobile-form-header">
-                <a href="director-dashboard.html" class="back-btn">
-                    <i class="fas fa-arrow-left"></i>
-                </a>
-                <h1 class="mobile-form-title">New Visit Report</h1>
-            </div>
-            
-            <!-- Progress Steps -->
-            <div class="progress-steps">
-                <div class="progress-step active">
-                    <div class="step-number">1</div>
-                    <div class="step-label">Basic Info</div>
-                </div>
-                <div class="progress-step">
-                    <div class="step-number">2</div>
-                    <div class="step-label">Details</div>
-                </div>
-                <div class="progress-step">
-                    <div class="step-number">3</div>
-                    <div class="step-label">Review</div>
-                </div>
-            </div>
-            
-            <!-- Form -->
-            <form class="mobile-form">
-                <!-- Professor Information -->
-                <section class="mobile-form-section">
-                    <h2 class="mobile-section-title">Professor Information</h2>
-                    
-                    <div class="mobile-form-group">
-                        <label for="mobileProfessorName" class="mobile-form-label">Full Name *</label>
-                        <input type="text" id="mobileProfessorName" class="mobile-form-input" placeholder="Enter professor's full name" required>
-                    </div>
-                    
-                    <div class="mobile-form-group">
-                        <label for="mobileInstitution" class="mobile-form-label">University/Institution *</label>
-                        <input type="text" id="mobileInstitution" class="mobile-form-input" placeholder="Enter institution name" required>
-                    </div>
-                    
-                    <div class="mobile-form-group">
-                        <label for="mobileVisitDate" class="mobile-form-label">Visit Date *</label>
-                        <input type="date" id="mobileVisitDate" class="mobile-form-input" required>
-                    </div>
-                    
-                    <div class="mobile-form-row">
-                        <div class="mobile-form-group">
-                            <label for="mobileStartTime" class="mobile-form-label">Start Time *</label>
-                            <input type="time" id="mobileStartTime" class="mobile-form-input" required>
-                        </div>
-                        <div class="mobile-form-group">
-                            <label for="mobileEndTime" class="mobile-form-label">End Time *</label>
-                            <input type="time" id="mobileEndTime" class="mobile-form-input" required>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- Meeting Details -->
-                <section class="mobile-form-section">
-                    <h2 class="mobile-section-title">Meeting Details</h2>
-                    
-                    <div class="mobile-form-group">
-                        <label for="mobileParticipants" class="mobile-form-label">Meeting Participants *</label>
-                        <textarea id="mobileParticipants" class="mobile-form-input textarea" placeholder="List all university staff the professor met with" required></textarea>
-                    </div>
-                    
-                    <div class="mobile-form-group">
-                        <label for="mobileSubject" class="mobile-form-label">Subject Discussed *</label>
-                        <select id="mobileSubject" class="mobile-form-input" required>
-                            <option value="">Select subject</option>
-                            <option value="research">Research Collaboration</option>
-                            <option value="curriculum">Curriculum Development</option>
-                            <option value="faculty">Faculty Exchange</option>
-                            <option value="student">Student Programs</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                    
-                    <div class="mobile-form-group">
-                        <label for="mobileStudentCount" class="mobile-form-label">Number of Students *</label>
-                        <input type="number" id="mobileStudentCount" class="mobile-form-input" placeholder="0" min="0" required>
-                    </div>
-                    
-                    <div class="mobile-form-group">
-                        <label class="mobile-form-label">Teaching Level *</label>
-                        <div class="level-buttons">
-                            <button type="button" class="level-btn">Undergraduate</button>
-                            <button type="button" class="level-btn">Graduate</button>
-                            <button type="button" class="level-btn">PhD</button>
-                            <button type="button" class="level-btn">Mixed</button>
-                        </div>
-                    </div>
-                    
-                    <div class="mobile-form-group">
-                        <label for="mobileNotes" class="mobile-form-label">Additional Notes</label>
-                        <textarea id="mobileNotes" class="mobile-form-input textarea" placeholder="Any additional observations or outcomes"></textarea>
-                    </div>
-                </section>
-                
-                <!-- Attachments -->
-                <section class="mobile-form-section">
-                    <h2 class="mobile-section-title">Attachments</h2>
-                    <div class="attachment-area">
-                        <div class="attachment-icon">
-                            <i class="fas fa-paperclip"></i>
-                        </div>
-                        <p class="attachment-text">Tap to upload photos, documents, or presentation files</p>
-                        <p class="attachment-note">Max file size: 10MB</p>
-                    </div>
-                </section>
             </form>
-            
-            <!-- Bottom Action Buttons -->
-            <div class="mobile-form-actions">
-                <button type="button" class="btn btn-outline btn-mobile" onclick="window.location.href='director-dashboard.html'">
-                    Cancel
-                </button>
-                <button type="button" class="btn btn-primary btn-mobile" id="mobileSubmitBtn">
-                    Submit Report
-                </button>
-            </div>
-            
-            <!-- Quick Navigation for Mobile -->
-            <div class="quick-nav">
-                <h3 class="section-title">All Screens</h3>
-                <div class="nav-buttons">
-                    <a href="index.html" class="nav-btn">Home</a>
-                    <a href="admin-login.html" class="nav-btn">Admin Login</a>
-                    <a href="director-login.html" class="nav-btn">Director Login</a>
-                    <a href="admin-dashboard.html" class="nav-btn">Admin Dashboard</a>
-                    <a href="director-dashboard.html" class="nav-btn">Director Dashboard</a>
-                </div>
-            </div>
         </div>
     </div>
+</div>
 
-    <script>
-        // Form submission handlers
-        document.addEventListener('DOMContentLoaded', function() {
-            // Desktop submit button
-            const submitBtn = document.getElementById('submitReportBtn');
-            if (submitBtn) {
-                submitBtn.addEventListener('click', function() {
-                    if (validateForm()) {
-                        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
-                        this.disabled = true;
-                        
-                        setTimeout(() => {
-                            alert('Visit report submitted successfully!');
-                            window.location.href = 'director-dashboard.html';
-                        }, 1500);
-                    }
-                });
+<!-- ──────────────────────────────────────────────── -->
+<!--                   MOBILE LAYOUT                   -->
+<!-- ──────────────────────────────────────────────── -->
+
+<div class="mobile-layout">
+    <div class="mobile-form-header">
+        <a href="director-dashboard.html" style="color:var(--gray-600); font-size:1.4rem; padding:0.6rem;">
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
+        <h1 style="font-size:1.3rem; flex:1; text-align:center;">New Visit Report</h1>
+    </div>
+
+    <div style="display:flex; justify-content:space-around; padding:1rem; background:white; border-bottom:1px solid var(--gray-200);">
+        <div style="text-align:center;" class="step-dot active"><div style="width:32px;height:32px;border-radius:50%;background:var(--primary);color:white;line-height:32px;font-weight:600;">1</div><div style="font-size:0.75rem;margin-top:4px;">Basics</div></div>
+        <div style="text-align:center;" class="step-dot"><div style="width:32px;height:32px;border-radius:50%;background:var(--gray-200);color:var(--gray-600);line-height:32px;font-weight:600;">2</div><div style="font-size:0.75rem;margin-top:4px;">Meeting</div></div>
+        <div style="text-align:center;" class="step-dot"><div style="width:32px;height:32px;border-radius:50%;background:var(--gray-200);color:var(--gray-600);line-height:32px;font-weight:600;">3</div><div style="font-size:0.75rem;margin-top:4px;">Files</div></div>
+    </div>
+
+    <form class="mobile-form" id="mobileForm" novalidate>
+        <!-- Step 1 mobile -->
+        <section id="mstep1">
+            <h2 class="mobile-section-title">Professor & Visit</h2>
+            <div class="mobile-form-group">
+                <label class="mobile-form-label"><span class="required">*</span> Professor Name</label>
+                <input type="text" class="mobile-form-input" required name="prof_name">
+            </div>
+            <div class="mobile-form-group">
+                <label class="mobile-form-label"><span class="required">*</span> Institution</label>
+                <input type="text" class="mobile-form-input" required name="institution">
+            </div>
+            <div class="mobile-form-group">
+                <label class="mobile-form-label"><span class="required">*</span> Visit Date</label>
+                <input type="date" class="mobile-form-input" required name="visit_date">
+            </div>
+            <div class="mobile-form-row">
+                <div>
+                    <label class="mobile-form-label"><span class="required">*</span> Start</label>
+                    <input type="time" class="mobile-form-input" required name="start_time">
+                </div>
+                <div>
+                    <label class="mobile-form-label"><span class="required">*</span> End</label>
+                    <input type="time" class="mobile-form-input" required name="end_time">
+                </div>
+            </div>
+            <div class="mobile-form-group">
+                <label class="mobile-form-label"><span class="required">*</span> Purpose</label>
+                <select class="mobile-form-input" required name="purpose">
+                    <option value="">— Select —</option>
+                    <option value="research">Research Collaboration</option>
+                    <option value="curriculum">Curriculum Discussion</option>
+                    <option value="lecture">Guest Lecture</option>
+                    <option value="workshop">Workshop/Seminar</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- Step 2 mobile -->
+        <section id="mstep2" style="display:none;">
+            <h2 class="mobile-section-title">Meeting Details</h2>
+            <div class="mobile-form-group">
+                <label class="mobile-form-label"><span class="required">*</span> Participants</label>
+                <textarea class="mobile-form-input" rows="4" required name="participants" placeholder="Names, separated by commas"></textarea>
+            </div>
+            <div class="mobile-form-group">
+                <label class="mobile-form-label"><span class="required">*</span> Main Subject</label>
+                <select class="mobile-form-input" required name="subject">
+                    <option value="">— Select —</option>
+                    <option value="research">Research</option>
+                    <option value="curriculum">Curriculum</option>
+                    <option value="faculty">Faculty Exchange</option>
+                    <option value="student">Student Programs</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="mobile-form-group">
+                <label class="mobile-form-label"><span class="required">*</span> Students Involved</label>
+                <input type="number" class="mobile-form-input" min="0" required name="student_count">
+            </div>
+            <div class="mobile-form-group">
+                <label class="mobile-form-label"><span class="required">*</span> Level</label>
+                <div class="level-buttons">
+                    <button type="button" class="level-btn" data-value="undergrad">Undergraduate</button>
+                    <button type="button" class="level-btn" data-value="graduate">Graduate</button>
+                    <button type="button" class="level-btn" data-value="phd">PhD</button>
+                    <button type="button" class="level-btn" data-value="mixed">Mixed</button>
+                </div>
+                <input type="hidden" name="level" id="mobileLevel" required>
+            </div>
+        </section>
+
+        <!-- Step 3 mobile -->
+        <section id="mstep3" style="display:none;">
+            <h2 class="mobile-section-title">Notes & Attachments</h2>
+            <div class="mobile-form-group">
+                <label class="mobile-form-label">Notes / Follow-up</label>
+                <textarea class="mobile-form-input" rows="5" name="notes"></textarea>
+            </div>
+            <div class="mobile-form-group">
+                <label class="mobile-form-label">Attachments</label>
+                <div class="file-area">
+                    <input type="file" id="mfiles" name="files" multiple accept="image/*,.pdf,.doc,.docx,.ppt,.pptx" style="display:none;">
+                    <p><strong>Tap to select files</strong></p>
+                    <p class="form-hint">Photos, PDF, slides • max ~12 MB/file</p>
+                    <div id="mfileList" class="file-preview"></div>
+                </div>
+            </div>
+        </section>
+    </form>
+
+    <div class="mobile-form-actions">
+        <button class="btn btn-outline btn-mobile" onclick="history.back()">Cancel</button>
+        <button class="btn btn-primary btn-mobile" id="mNextBtn">Next</button>
+        <button class="btn btn-primary btn-mobile" id="mSubmitBtn" style="display:none;">Submit</button>
+    </div>
+</div>
+
+<script>
+// Shared logic
+const isMobile = window.innerWidth <= 768;
+const form = isMobile ? document.getElementById('mobileForm') : document.getElementById('visitForm');
+
+function setTodayDate() {
+    const today = new Date().toISOString().split('T')[0];
+    document.querySelectorAll('input[type="date"]').forEach(el => {
+        if (!el.value) el.value = today;
+    });
+}
+
+function calculateDuration() {
+    const start = document.getElementById('startTime')?.value || document.querySelector('[name="start_time"]')?.value;
+    const end   = document.getElementById('endTime')?.value   || document.querySelector('[name="end_time"]')?.value;
+    if (!start || !end) return;
+    
+    const s = new Date(`1970-01-01T${start}:00`);
+    const e = new Date(`1970-01-01T${end}:00`);
+    if (e <= s) {
+        alert("End time should be after start time.");
+        return;
+    }
+    const hours = ((e - s) / 3600000).toFixed(1);
+    const durField = document.getElementById('duration') || document.querySelector('[name="duration"]');
+    if (durField) durField.value = hours;
+}
+
+// File preview
+function handleFiles(input, previewEl) {
+    input.addEventListener('change', e => {
+        const files = Array.from(e.target.files);
+        previewEl.innerHTML = files.length ? 
+            files.map(f => `<div>${f.name} (${(f.size/1024/1024).toFixed(1)} MB)</div>`).join('') :
+            'No files selected';
+    });
+}
+
+// Desktop file
+const fileInput = document.getElementById('files');
+const filePreview = document.getElementById('fileList');
+if (fileInput && filePreview) handleFiles(fileInput, filePreview);
+
+// Mobile file
+const mfileInput = document.getElementById('mfiles');
+const mfilePreview = document.getElementById('mfileList');
+if (mfileInput && mfilePreview) handleFiles(mfileInput, mfilePreview);
+
+// Mobile level buttons
+document.querySelectorAll('.level-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('mobileLevel').value = btn.dataset.value;
+    });
+});
+
+function validateCurrentStep(step) {
+    let valid = true;
+    const container = isMobile ? document.getElementById(`mstep${step}`) : document.getElementById(`step${step}`);
+    container.querySelectorAll('[required]').forEach(field => {
+        if (!field.value.trim() && field.type !== 'radio') {
+            field.style.borderColor = 'var(--danger)';
+            const err = field.parentElement.querySelector('.error-message') || field.nextElementSibling;
+            if (err?.classList.contains('error-message')) err.textContent = 'Required';
+            valid = false;
+        } else if (field.type === 'radio' && !container.querySelector('[name="level"]:checked')) {
+            valid = false;
+        } else {
+            field.style.borderColor = '';
+            if (field.nextElementSibling?.classList.contains('error-message')) {
+                field.nextElementSibling.textContent = '';
             }
-            
-            // Mobile submit button
-            const mobileSubmitBtn = document.getElementById('mobileSubmitBtn');
-            if (mobileSubmitBtn) {
-                mobileSubmitBtn.addEventListener('click', function() {
-                    if (validateMobileForm()) {
-                        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
-                        this.disabled = true;
-                        
-                        setTimeout(() => {
-                            alert('Visit report submitted successfully!');
-                            window.location.href = 'director-dashboard.html';
-                        }, 1500);
-                    }
-                });
-            }
-            
-            // Save draft button
-            const saveDraftBtn = document.getElementById('saveDraftBtn');
-            if (saveDraftBtn) {
-                saveDraftBtn.addEventListener('click', function() {
-                    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
-                    this.disabled = true;
-                    
-                    setTimeout(() => {
-                        alert('Draft saved successfully!');
-                        this.innerHTML = 'Save as Draft';
-                        this.disabled = false;
-                    }, 1000);
-                });
-            }
-            
-            // Teaching level buttons
-            const levelButtons = document.querySelectorAll('.level-btn');
-            levelButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    levelButtons.forEach(btn => {
-                        btn.style.backgroundColor = '';
-                        btn.style.borderColor = '';
-                        btn.style.color = '';
-                    });
-                    this.style.backgroundColor = 'rgba(10, 102, 194, 0.1)';
-                    this.style.borderColor = 'var(--primary)';
-                    this.style.color = 'var(--primary)';
-                });
-            });
-            
-            // Set default date to today
-            const today = new Date().toISOString().split('T')[0];
-            const dateInputs = document.querySelectorAll('input[type="date"]');
-            dateInputs.forEach(input => {
-                if (!input.value) {
-                    input.value = today;
-                }
-            });
+        }
+    });
+    return valid;
+}
+
+function updateProgress(step, total = 3) {
+    const percent = Math.round((step / total) * 100);
+    document.getElementById('stepNum')?.textContent = step;
+    document.getElementById('stepPercent')?.textContent = `${percent}%`;
+    document.getElementById('progressFill')?.style.width = `${percent}%`;
+
+    // Mobile dots
+    document.querySelectorAll('.step-dot').forEach((dot,i) => {
+        dot.classList.toggle('active', i+1 === step);
+    });
+}
+
+// Step navigation
+let currentStep = 1;
+
+function showStep(n) {
+    currentStep = n;
+    if (!isMobile) {
+        [1,2,3].forEach(i => {
+            document.getElementById(`step${i}`).style.display = i===n ? 'block' : 'none';
         });
-        
-        // Form validation for desktop
-        function validateForm() {
-            const requiredFields = document.querySelectorAll('#visitForm [required]');
-            let isValid = true;
-            
-            requiredFields.forEach(field => {
-                if (!field.value.trim()) {
-                    field.style.borderColor = 'var(--danger)';
-                    isValid = false;
-                } else {
-                    field.style.borderColor = '';
-                }
-            });
-            
-            if (!isValid) {
-                alert('Please fill in all required fields marked with *');
-                return false;
+        document.getElementById('prevBtn').style.display = n>1 ? 'inline-flex' : 'none';
+        document.getElementById('nextBtn').style.display = n<3 ? 'inline-flex' : 'none';
+        document.getElementById('submitBtn').style.display = n===3 ? 'inline-flex' : 'none';
+    } else {
+        [1,2,3].forEach(i => {
+            document.getElementById(`mstep${i}`).style.display = i===n ? 'block' : 'none';
+        });
+        document.getElementById('mNextBtn').style.display = n<3 ? 'block' : 'none';
+        document.getElementById('mSubmitBtn').style.display = n===3 ? 'block' : 'none';
+    }
+    updateProgress(n);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    setTodayDate();
+
+    // Auto duration
+    ['startTime','endTime'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('change', calculateDuration);
+    });
+    const mstart = document.querySelector('[name="start_time"]');
+    const mend   = document.querySelector('[name="end_time"]');
+    if (mstart && mend) {
+        mstart.addEventListener('change', calculateDuration);
+        mend.addEventListener('change', calculateDuration);
+    }
+
+    // Navigation
+    document.getElementById('nextBtn')?.addEventListener('click', () => {
+        if (validateCurrentStep(currentStep)) {
+            showStep(currentStep + 1);
+        }
+    });
+
+    document.getElementById('prevBtn')?.addEventListener('click', () => {
+        showStep(currentStep - 1);
+    });
+
+    document.getElementById('mNextBtn')?.addEventListener('click', () => {
+        if (validateCurrentStep(currentStep)) {
+            showStep(currentStep + 1);
+        }
+    });
+
+    // Submit (both)
+    const submitHandler = e => {
+        e.preventDefault();
+        if (validateCurrentStep(3)) {
+            if (confirm("Submit this visit report?")) {
+                alert("Report submitted successfully! (demo)");
+                setTimeout(() => location.href = "director-dashboard.html", 800);
             }
-            
-            return true;
         }
-        
-        // Form validation for mobile
-        function validateMobileForm() {
-            const requiredFields = document.querySelectorAll('.mobile-form [required]');
-            let isValid = true;
-            
-            requiredFields.forEach(field => {
-                if (!field.value.trim()) {
-                    field.style.borderColor = 'var(--danger)';
-                    isValid = false;
-                } else {
-                    field.style.borderColor = '';
-                }
-            });
-            
-            if (!isValid) {
-                alert('Please fill in all required fields marked with *');
-                return false;
-            }
-            
-            return true;
-        }
-        
-        // Simulate file upload for attachment area
-        const attachmentArea = document.querySelector('.attachment-area');
-        if (attachmentArea) {
-            attachmentArea.addEventListener('click', function() {
-                const input = document.createElement('input');
-                input.type = 'file';
-                input.accept = 'image/*,.pdf,.doc,.docx';
-                input.multiple = true;
-                
-                input.addEventListener('change', function(e) {
-                    if (this.files.length > 0) {
-                        const fileNames = Array.from(this.files).map(file => file.name).join(', ');
-                        alert(`Selected files: ${fileNames}`);
-                        
-                        // Update attachment area text
-                        const attachmentText = document.querySelector('.attachment-text');
-                        if (attachmentText) {
-                            attachmentText.textContent = `${this.files.length} file(s) selected`;
-                        }
-                    }
-                });
-                
-                input.click();
-            });
-        }
-    </script>
+    };
+
+    form.addEventListener('submit', submitHandler);
+    document.getElementById('submitBtn')?.addEventListener('click', submitHandler);
+    document.getElementById('mSubmitBtn')?.addEventListener('click', submitHandler);
+
+    // Cancel
+    document.getElementById('cancelBtn')?.addEventListener('click', () => {
+        if (confirm("Discard changes?")) history.back();
+    });
+
+    showStep(1);
+});
+</script>
 </body>
 </html>
